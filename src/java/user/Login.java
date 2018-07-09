@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package user;
 
 import general.LucruBd;
@@ -14,20 +13,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.json.*;
 
 public class Login extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        String username = "";
-        String password = "";
-        
         try {
-            username = request.getParameter("username");
-            password = request.getParameter("password");
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
             System.out.println("-----Login-----");
             System.out.println("username: " + username);
             System.out.println("password: " + password);
@@ -36,72 +33,51 @@ public class Login extends HttpServlet {
 
             if (exista) {
                 JSONObject obj = new JSONObject();
-                
+
                 //obj.put("cheie", "valoare");
                 obj.put("id", "1");
                 obj.put("username", username);
                 obj.put("password", password);
-                
+
                 System.out.println("login reusit");
                 
+                //Salvam sesiunea
+                HttpSession session = request.getSession(true);
+                session.setAttribute("user", obj);
+
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(obj.toString());
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {
                 System.out.println("login esuat");
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
         } catch (Exception e) {
 
         }
-
-//        try (PrintWriter out = response.getWriter()) {
-//            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet Login</title>");
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet Login at " + request.getContextPath() + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
-//        }
     }
 
     public boolean login(String userName, String parola) {
         LucruBd lucruBd = new LucruBd();
-        lucruBd.getConnection();
-
-        String query = "select * from users where username='" + userName+"'";
-        System.out.println("query: "+query);
 
         try {
-            Statement stmt = lucruBd.conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+            PreparedStatement ps = null;
+            String query = "select * from users where username = ? and password = ?";
+            ps = lucruBd.getConnection().prepareStatement(query);
+            ps.setString(1, userName);
+            ps.setString(2, parola);
+            ResultSet rs = ps.executeQuery();
+            Boolean utilizatorExista = rs.next();
+            //inchidem conexiunile
+            rs.close();
+            ps.close();
 
-            if (!rs.next()) {
-                System.out.println("NU exista userul");
-                rs.close();
-                stmt.close();
-                return false;
-            } else {
-                System.out.println("parola introdusa: "+parola);
-                System.out.println("parola bd: "+rs.getString(3));
-                if (parola.equals(rs.getString(3))) {
-                    System.out.println("Utilizatorul exista si are parola introdusa");
-                    rs.close();
-                    stmt.close();
-                    return true;
-                } else {
-                    rs.close();
-                    stmt.close();
-                    return false;
-                }
-            }
-        } catch (SQLException sqle) {
+            return utilizatorExista;
+        } catch (Exception sqle) {
             sqle.printStackTrace();
         }
+
         return true;
     }
 
@@ -143,6 +119,5 @@ public class Login extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
-}
 
+}
