@@ -34,7 +34,7 @@ function doLogin() {
         ,
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert ("EROARE");
-            console.log(textStatus); 
+            console.log(textStatus);
         }
     });
 }
