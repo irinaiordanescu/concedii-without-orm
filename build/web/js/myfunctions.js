@@ -5,7 +5,7 @@
  */
 
 function doLogin() {
-   // alert("dologin");
+    // alert("dologin");
     var userName = $('#username').val();
     var password = $('#password').val();
 
@@ -16,24 +16,13 @@ function doLogin() {
         data: "username=" + userName + "&password=" + password,
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         dataType: 'json',
-        
-        success: function (data, textStatus) {
-           //alert('success');
-            
-            console.log(data);
-            console.log(data.id);
-            console.log(data.username);
-            console.log(data.password);
-            
-            var id = data.id;
-            var user = data.user;
-            var password = data.password;
 
+        success: function (data, textStatus) {
             window.location.href = "paginaPrincipala.jsp";
-        }   
+        }
         ,
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            alert ("EROARE");
+            alert("EROARE");
             console.log(textStatus);
         }
     });

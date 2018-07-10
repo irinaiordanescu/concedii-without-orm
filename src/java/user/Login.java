@@ -83,17 +83,20 @@ public class Login extends HttpServlet {
         //Salvam sesiunea
         HttpSession session = request.getSession(true);
         int id = 0;
-        
+
         try {
             LucruBd lucruBd = new LucruBd();
             PreparedStatement ps = null;
-            String query = "select id from users where username = ? and password = ?";
+            String query = "select users.id from users where username = ? and password = ?";
             ps = lucruBd.getConnection().prepareStatement(query);
             ps.setString(1, username);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
-            id = rs.getInt("id");
-        }catch(Exception e){
+
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

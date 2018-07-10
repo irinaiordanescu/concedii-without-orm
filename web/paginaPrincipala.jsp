@@ -24,7 +24,7 @@
                         <div class="quick-profile">
                             <menu>
                                 <div id="quickProfileToggle">
-                                    <a class="user-full-name" href="/">Utilizator</a>
+                                    <a class="user-full-name" href="/"> <% out.print(request.getSession().getAttribute("username")); %> </a>
                                     <img src="images/Avatar.png" alt="Avatar" class="center-block" style="border-radius: 50%;height: 185px;width: 175px;margin-bottom: 10px">
                                 </div>
                             </menu>
@@ -34,7 +34,7 @@
                     <nav>
                         <ul class="level0" role="navigation">
                             <li class="nav-btn-members"> 
-                                <a id="members_nav" class="active" href="/Concedii/formularConcedii.html">
+                                <a id="members_nav" class="active" href="#">
                                     <i class="fa fa-use" data-original-title="" title=""> </i>
                                     FORMULAR CONCEDIU
                                     <span class="indicator"> </span>
@@ -42,7 +42,7 @@
                             </li>
 
                             <li>
-                                <a id="time_off_nav" href="/Concedii/calendarPersonal.html">
+                                <a id="time_off_nav" href="#">
                                     <i class="fa fa-calendar" data-original-title="" title=""> </i>
                                     CALENDAR PERSONAL
                                     <span id="awaiting_approval_count" class="badge"> </span>>
@@ -51,7 +51,7 @@
                             </li>
 
                             <li>
-                                <a id="time_off_nav" href="/Concedii/calendarFirma.html">
+                                <a id="time_off_nav" href="#">
                                     <i class="fa fa-calendar" data-original-title="" title=""> </i>
                                     CALENDAR FIRMA
                                     <span id="awaiting_approval_count" class="badge"> </span>>
@@ -60,7 +60,7 @@
                             </li>
 
                             <li class="nav-btn-members"> 
-                                <a id="members_nav" class="active" href="/Concedii/membriiFirma.html">
+                                <a id="members_nav" class="active" href="#">
                                     <i class="fa fa-use" data-original-title="" title=""> </i>
                                     MEMBRII FIRMA 
                                     <span class="indicator"> </span>
@@ -70,12 +70,12 @@
                     </nav>
                 </div>
             </header>
+        </div>
 
 
 
             <!--
             
             -->
-
-    </body>
+</body>
 </html>
