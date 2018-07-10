@@ -40,15 +40,13 @@ public class Login extends HttpServlet {
                 obj.put("password", password);
 
                 System.out.println("login reusit");
-                
-                //Salvam sesiunea
-                HttpSession session = request.getSession(true);
-                session.setAttribute("user", obj);
+                salveazaSesiunea(request, username, password);
 
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(obj.toString());
                 response.setStatus(HttpServletResponse.SC_OK);
+
             } else {
                 System.out.println("login esuat");
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -68,7 +66,7 @@ public class Login extends HttpServlet {
             ps.setString(1, userName);
             ps.setString(2, parola);
             ResultSet rs = ps.executeQuery();
-            Boolean utilizatorExista = rs.next();
+            boolean utilizatorExista = rs.next();
             //inchidem conexiunile
             rs.close();
             ps.close();
@@ -79,6 +77,29 @@ public class Login extends HttpServlet {
         }
 
         return true;
+    }
+
+    public void salveazaSesiunea(HttpServletRequest request, String username, String password) {
+        //Salvam sesiunea
+        HttpSession session = request.getSession(true);
+        int id = 0;
+        
+        try {
+            LucruBd lucruBd = new LucruBd();
+            PreparedStatement ps = null;
+            String query = "select id from users where username = ? and password = ?";
+            ps = lucruBd.getConnection().prepareStatement(query);
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+            id = rs.getInt("id");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        session.setAttribute("id", id);
+        session.setAttribute("username", username);
+        session.setAttribute("password", password);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

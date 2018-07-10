@@ -29,7 +29,7 @@ function doLogin() {
             var user = data.user;
             var password = data.password;
 
-            window.location.href = "paginaPrincipala.html";
+            window.location.href = "paginaPrincipala.jsp";
         }   
         ,
         error: function (XMLHttpRequest, textStatus, errorThrown) {
