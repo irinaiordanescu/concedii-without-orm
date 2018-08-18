@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
-<% 
-    if((String) session.getAttribute("id") == null){
-       response.setStatus(HttpServletResponse.SC_FOUND);//302
-       return;
+<%
+    if ((String) session.getAttribute("id") == null) {
+        response.setStatus(HttpServletResponse.SC_FOUND);//302
+        return;
 //      response.setHeader("Location", "http://localhost:8080/Concedii/paginaLogin.html/");
     }
 %>
@@ -74,6 +74,15 @@
                                 <a id="members_nav" class="active" href="membriiFirma.jsp" target="frame_02" >
                                     <i class="fa fa-use" data-original-title="" title=""> </i>
                                     MEMBRII FIRMA 
+                                    <span class="indicator"> </span>
+                                </a>
+                            </li>
+
+                            <!--<input type="button" style="background-color: #b96c88" class="btn btn btn-primary" onclick="cleanSession()" value="Log out"/>--> 
+                            <li class="nav-btn-members"> 
+                                <a id="members_nav" class="active log-out" href="#" onclick="cleanSession()" style="background-color: #b96c88;" >
+                                    <i class="fa fa-use" data-original-title="" title=""> </i>
+                                    LOG OUT 
                                     <span class="indicator"> </span>
                                 </a>
                             </li>

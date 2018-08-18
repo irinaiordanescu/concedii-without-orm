@@ -10645,3 +10645,9 @@ body.user-sign-in .help-inline{
     margin-left: 50px;
     margin-top: 50px;
 }
+
+.log-out{
+    background-color: #b96c88;
+    bottom: 0px;
+    position: absolute;
+}

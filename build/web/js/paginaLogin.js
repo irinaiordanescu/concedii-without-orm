@@ -1,5 +1,5 @@
 function doLogin() {
-   // alert("dologin");
+    // alert("dologin");
     var userName = $('#username').val();
     var password = $('#password').val();
 
@@ -10,18 +10,18 @@ function doLogin() {
         data: "username=" + userName + "&password=" + password,
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         dataType: 'json',
-        
+
         success: function (data, textStatus) {
-           var user = data;
-           if(user.este_admin == "1"){
-               window.location.href = "paginaAdmin.jsp";
-               return;
-           }
+            var user = data;
+            if (user.este_admin == "1") {
+                window.location.href = "paginaAdmin.jsp";
+                return;
+            }
             window.location.href = "frame.jsp";
-        }   
+        }
         ,
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            alert ("EROARE");
+            alert("EROARE");
             console.log(textStatus);
         }
     });
@@ -36,27 +36,28 @@ function doReg() {
     var departament = $('#departament').val();
     var tipangajat = $('#tipangajat').val()
     //alert("username " + userName + " password " + password + " checkpassword " + checkpassword + " tipangajat " + tipangajat);
-    
+
     $.ajax({
         type: "post",
         url: "Register",
         data: "username=" + userName + "&password=" + password + "&checkpassword=" + checkpassword + "&departament=" + departament + "&tipangajat=" + tipangajat,
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         dataType: 'json',
-        
+
         success: function (data, textStatus) {
             alert('success reg');
-            
+
             window.location.href = "frame.html";
-        }   
+        }
         ,
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             //alert("err");
-            if(userName == "" || password == ""){
+            if (userName == "" || password == "") {
                 alert("Eroare ---> username sau parola = null");
-            } else if(password != checkpassword){
-                alert("Eroare ---> parolele nu coincid");                               
-            } else alert("Eroare ---> username-ul exista deja ==> alege alt username");
+            } else if (password != checkpassword) {
+                alert("Eroare ---> parolele nu coincid");
+            } else
+                alert("Eroare ---> username-ul exista deja ==> alege alt username");
             console.log(textStatus);
         }
     });
@@ -64,26 +65,23 @@ function doReg() {
 
 function showReg() {
     var divelement = document.getElementById("checkpassword");
-    if(divelement.style.display == "none") {
+    if (divelement.style.display == "none") {
         divelement.style.display = "block";
-    }
-    else {
+    } else {
         divelement.style.display = "none";
     }
-     
+
     var divelement2 = document.getElementById("departament");
-    if(divelement2.style.display == "none") {
+    if (divelement2.style.display == "none") {
         divelement2.style.display = "block";
-    }
-    else {
+    } else {
         divelement2.style.display = "none";
     }
-    
+
     var divelement3 = document.getElementById("tipangajat");
-    if(divelement3.style.display == "none") {
+    if (divelement3.style.display == "none") {
         divelement3.style.display = "block";
-    }
-    else {
+    } else {
         divelement3.style.display = "none";
     }
 }
@@ -93,4 +91,18 @@ $(document).keypress(function (e) { //dupa ce scriu in pagina si dau enter ma du
         doLogin();
     }
 });
+
+function cleanSession() {
+    $.ajax({
+        type: "post",
+        url: "Logout",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        dataType: 'json',
+        success: function (data, textStatus) {
+
+        }}
+    )
+    top.location.href = "http://localhost:8080/Concedii/paginaLogin.html/";
+}
+
 
