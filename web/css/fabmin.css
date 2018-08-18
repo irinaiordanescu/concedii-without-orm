@@ -10610,3 +10610,38 @@ body.user-sign-in .help-inline{
     margin-top:100px;
 }
 
+.container-login100 {
+  width: 100%;  
+  min-height: 100vh;
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  z-index: 1;  
+}
+
+.container-login100::before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: -1;
+  width: 100%;  
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(255,255,255,0.7);
+}
+
+.membrii{
+    margin-top: 50px;
+    width: 500px;
+    margin-left: 10px;
+}
+
+.calendar{
+    width: 90%;
+    height: 90%;
+    margin-left: 50px;
+    margin-top: 50px;
+}

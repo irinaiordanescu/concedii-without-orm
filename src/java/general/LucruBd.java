@@ -16,7 +16,7 @@ public class LucruBd {
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             if (conn == null) { // Pe principiul Singleton, daca e null, o initiez doar o singura data
-                conn = DriverManager.getConnection("jdbc:mysql://localhost:6603/firma", "admin", "mysqlpassword");
+                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/firma", "root", "mysqlpass");
             }
         } catch (Exception e) {
             e.printStackTrace();

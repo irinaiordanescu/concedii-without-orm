@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Membrii firma</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
@@ -12,23 +10,23 @@
 
         <!--SCRIPTS-->
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
-        <script type="text/javascript" src="js/myfunctions.js"></script>
-        <script type="text/javascript" src="js/meniuPrincipal.js"></script>
+        <script type="text/javascript" src="js/membriiFirma.js"></script>
     </head>
-    <body>
+    
+    <body class='container-login100' style="background-image: url('images/beach-sunset.jpg');">
         <div class="frame-margine">
             <br>
             Selectati tipul de angajat:
-            <select  title = " Selectati tipul de angajat: " id="mySelect">
-                <option> </option>
+            <select color="#6e6e6e" title = " Selectati tipul de angajat: " id="mySelect">
+                <option></option>
                 <option>toti angajatii</option>
-                <option>sef nivel 1</option>
-                <option>sef nivel 2</option>
-                <option>angajat junior</option>
-                <option>angajat senior</option>
             </select>
             <br>
             <br>
-            <button id="submit_button" class="btn btn btn-primary" name="button" type="sbmit"> Afiseaza </button>
+                <button id="submit_button" class="btn btn btn-primary" name="button" type="submit" style="background-color: #b96c88" onclick="afisareAngajati()"> Afiseaza </button>              
         </div>
+        <div id="membrii" class="membrii">
+            
+        </div>
+
 </html>
