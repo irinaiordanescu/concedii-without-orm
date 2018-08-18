@@ -38,14 +38,17 @@ public class CalendarFirma extends HttpServlet {
      protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        String idUser = null;
+        String prioritate = null;
         JSONObject json = new JSONObject();
 
         try {
-            idUser = request.getParameter("id");
-            String query = "SELECT users.username, prima_zi_concediu, ultima_zi_concediu FROM firma.formular_concediu join users on users.id = formular_concediu.user_id";
+            prioritate = (String) request.getSession().getAttribute("prioritate");
+            if(prioritate == null){
+                return;
+            }
+            String query = "SELECT users.username, prima_zi_concediu, ultima_zi_concediu FROM firma.formular_concediu join users on users.id = formular_concediu.user_id AND users.prioritate <= ?";
             PreparedStatement pst = LucruBd.getConnection().prepareStatement(query);
-//            pst.setString(1, idUser);
+            pst.setString(1, prioritate);
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {

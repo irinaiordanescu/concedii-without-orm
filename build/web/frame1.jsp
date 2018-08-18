@@ -32,7 +32,7 @@
                         <div class="quick-profile">
                             <menu>
                                 <div id="quickProfileToggle">
-                                    <a class="user-full-name" href="/paginaPrincipala.jsp">
+                                    <a class="user-full-name">
                                         <%
                                             String name = (String) session.getAttribute("username");
                                             out.print(name);

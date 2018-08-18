@@ -42,7 +42,10 @@ public class CalendarPersonal extends HttpServlet {
         JSONObject json = new JSONObject();
 
         try {
-            idUser = request.getParameter("id");
+            idUser = (String) request.getSession().getAttribute("id");
+            if(idUser == null){
+                return;
+            }
             String query = "SELECT prima_zi_concediu, ultima_zi_concediu FROM firma.formular_concediu where user_id = ?";
             PreparedStatement pst = LucruBd.getConnection().prepareStatement(query);
             pst.setString(1, idUser);

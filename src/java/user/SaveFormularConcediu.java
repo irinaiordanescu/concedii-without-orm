@@ -54,8 +54,13 @@ public class SaveFormularConcediu extends HttpServlet {
             System.out.println("nrZileLibere: " + nrZileLibere);
             System.out.println("deLaData: " + deLaData);
             System.out.println("panaLaData: " + panaLaData);
+            
+            String idUser = (String) request.getSession().getAttribute("id");
+            if (idUser == null) {
+                return;
+            }
 
-            if (!formularulEsteValid(tipConcediu, descriere, nrZileLibere, deLaData, panaLaData)) {
+            if (!formularulEsteValid(tipConcediu, descriere, nrZileLibere, deLaData, panaLaData, idUser)) {
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write("{success: false}");
@@ -63,7 +68,7 @@ public class SaveFormularConcediu extends HttpServlet {
                 return;
             }
 
-            String query = "insert into formular_concediu(tip_concediu, descriere, numar_zile_libere, prima_zi_concediu, ultima_zi_concediu) values (?,?,?,?,?)";
+            String query = "insert into formular_concediu(tip_concediu, descriere, numar_zile_libere, prima_zi_concediu, ultima_zi_concediu, user_id) values (?,?,?,?,?,?)";
             PreparedStatement pst = LucruBd.conn.prepareStatement(query);
 
             pst.setString(1, tipConcediu);
@@ -71,6 +76,7 @@ public class SaveFormularConcediu extends HttpServlet {
             pst.setString(3, nrZileLibere);
             pst.setString(4, deLaData);
             pst.setString(5, panaLaData);
+            pst.setString(6, idUser);
             pst.executeUpdate();
             System.out.println("query: " + query);
             System.out.println("s-a realizat cu succes");
@@ -89,7 +95,7 @@ public class SaveFormularConcediu extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_OK);
     }
 
-    public static boolean formularulEsteValid(String tipConcediu, String descriere, String nrZileLibere, String deLaData, String panaLaData) throws ParseException, SQLException {
+    public static boolean formularulEsteValid(String tipConcediu, String descriere, String nrZileLibere, String deLaData, String panaLaData, String idUser) throws ParseException, SQLException {
         if (!stringulEsteValid(tipConcediu)) {
             return false;
         }
@@ -106,7 +112,7 @@ public class SaveFormularConcediu extends HttpServlet {
             return false;
         }
 
-        return calendarulRespectaRegulileFirmei(nrZileLibere, deLaData, panaLaData);
+        return calendarulRespectaRegulileFirmei(nrZileLibere, deLaData, panaLaData, idUser);
     }
 
     public static boolean stringulEsteValid(String valoare) {
@@ -120,8 +126,8 @@ public class SaveFormularConcediu extends HttpServlet {
     }
 
     //Particularitati
-    public static boolean calendarulRespectaRegulileFirmei(String nrZileLibere, String deLaData, String panaLaData) throws ParseException, SQLException {
-        ArrayList<ArrayList<String>> toateConcediile = toateConcediileUtilizatorului("1");
+    public static boolean calendarulRespectaRegulileFirmei(String nrZileLibere, String deLaData, String panaLaData, String idUser) throws ParseException, SQLException {
+        ArrayList<ArrayList<String>> toateConcediile = toateConcediileUtilizatorului(idUser);
 
         if (!perioadaEsteCorectIntrodusa(deLaData, panaLaData)) {
             return false;
@@ -171,7 +177,7 @@ public class SaveFormularConcediu extends HttpServlet {
             //creez un calendar din stringul stringToCalnedar
             Calendar deLa = stringToCalendar(concediu.get(0)); //concediu.get(0) = perioada de inceput
             Calendar panaLa = stringToCalendar(concediu.get(1)); //concediu.get(1) = perioada de final
-            
+
             //zileConcediuUtilizate = zileConcediuUtilizate + daysBetween(deLa.getTime(), panaLa.getTime());
             zileConcediuUtilizate += daysBetween(deLa.getTime(), panaLa.getTime());
         }
@@ -179,7 +185,7 @@ public class SaveFormularConcediu extends HttpServlet {
         int zileConcediuCerute = daysBetween(stringToCalendar(nouaPerioadaDeLa).getTime(), stringToCalendar(nouaPerioadaPanaLa).getTime());
         return zileConcediuUtilizate + zileConcediuCerute <= 30;
     }
-    
+
     //returneaza toate concediile utilizatorului folosind un select apeland baza de date
     public static ArrayList<ArrayList<String>> toateConcediileUtilizatorului(String id) throws SQLException {
         //apelez baza de date
@@ -187,17 +193,17 @@ public class SaveFormularConcediu extends HttpServlet {
         PreparedStatement pst = LucruBd.getConnection().prepareStatement(query);
         pst.setString(1, id);
         ResultSet rs = pst.executeQuery();
-        
+
         //creez o lista locala pentru un singur concediu dupa care adaug lista in lista cu toate concediile
         ArrayList<ArrayList<String>> toateConcediile = new ArrayList<ArrayList<String>>(); //ArrayList<ArrayList<String>> = Lista de lista de string
-        
+
         //in baza de date creez toate concediile si pt fiecare formular de concediu adaug perioada de inceput si perioada de sfarsit in lista
         //am o lista numita 'concedii' care are 2 val: 0 = perioada de inceput, 1 = perioada de final
         //concedii.add(rs.getString(1)); = in lista concedii adaug valoarea obtinuta din apelarea bazei de date pt a vedea data finala
         // => in lista de concedii adaug perioada de final
         // 0 si 1 sunt din lista, iar 1 si 2 sunt din PeparedStatement
         while (rs.next()) {
-            ArrayList<String> concedii = new ArrayList<String>();           
+            ArrayList<String> concedii = new ArrayList<String>();
             concedii.add(rs.getString(1));
             concedii.add(rs.getString(2));
             toateConcediile.add(concedii);
@@ -208,7 +214,7 @@ public class SaveFormularConcediu extends HttpServlet {
     //returnez numarul concediilor(numara toate concediile din lista concediu)
     public static boolean concediulEsteImpartitCorect(ArrayList<ArrayList<String>> toateConcediile) {
         int numarConcediiUtilizate = 0;
-        
+
         //toate concediile sunt stocate intr-o lista numita toateConcediile, iar pentru fiecare lista numita concediu din lista mea de liste se executa 
         for (ArrayList<String> concediu : toateConcediile) {
             numarConcediiUtilizate++;
@@ -216,7 +222,7 @@ public class SaveFormularConcediu extends HttpServlet {
 
         return numarConcediiUtilizate <= 2;
     }
-    
+
     //numar perioadele de concediu care trebuie sa fie maxim 3
     public static boolean concediulEsteAlocatCorectVara(String deLaData, String panaLaData) throws ParseException {
         Calendar deLa = stringToCalendar(deLaData);
@@ -225,7 +231,7 @@ public class SaveFormularConcediu extends HttpServlet {
         int lunaDeLa = deLa.get(Calendar.MONTH);
         int lunaPanaLa = panaLa.get(Calendar.MONTH);
         int numarZileConcediu = daysBetween(deLa.getTime(), panaLa.getTime());
-        
+
         //concediu de vara(max 21zile libere)
         if ((lunaDeLa >= 5 && lunaDeLa <= 7) || (lunaPanaLa >= 5 && lunaDeLa <= 7)) {
             return numarZileConcediu <= 21;
@@ -290,9 +296,8 @@ public class SaveFormularConcediu extends HttpServlet {
         return "Short description";
     }// </editor-fold>  
 
-    public static boolean maximJumatateInConcediu (String id) throws ParseException, SQLException {
-        
-        
+    public static boolean maximJumatateInConcediu(String id) throws ParseException, SQLException {
+
         return true;
     }
 }
