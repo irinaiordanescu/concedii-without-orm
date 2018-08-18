@@ -38,9 +38,10 @@ public class Login extends HttpServlet {
 
             if (exista) {
                 JSONObject user = getUserData(username, password);
-                HttpSession session = request.getSession();
-                session.setAttribute("user", user.toString());
-                
+                HttpSession session = request.getSession(true);
+                for (String key : user.keySet()) {
+                    session.setAttribute(key, user.get(key));
+                }
 
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");

@@ -1,5 +1,11 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
+<% 
+    if((String) session.getAttribute("id") == null){
+       response.setStatus(HttpServletResponse.SC_FOUND);//302
+      response.setHeader("Location", "http://localhost:8080/Concedii/paginaLogin.html/");
+    }
+%>
 <html>
     <head>
         <title>Planificare Concedii</title>
