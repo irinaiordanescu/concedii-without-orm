@@ -14,10 +14,10 @@ function doLogin() {
         success: function (data, textStatus) {
            var user = data;
            if(user.este_admin == "1"){
-               window.location.href = "paginaAdmin.html";
+               window.location.href = "paginaAdmin.jsp";
                return;
            }
-            window.location.href = "frame.html";
+            window.location.href = "frame.jsp";
         }   
         ,
         error: function (XMLHttpRequest, textStatus, errorThrown) {

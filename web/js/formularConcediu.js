@@ -19,7 +19,7 @@ function saveFormular() {
 
         success: function (data, textStatus) {
             //alert('success');
-            window.location.href = "frame2.html";
+            window.location.href = "frame2.jsp";
         }
         ,
         error: function (XMLHttpRequest, textStatus, errorThrown) {

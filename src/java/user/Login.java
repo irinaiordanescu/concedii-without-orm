@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.json.*;
 
 public class Login extends HttpServlet {
@@ -37,13 +38,15 @@ public class Login extends HttpServlet {
 
             if (exista) {
                 JSONObject user = getUserData(username, password);
-
-                System.out.println("login reusit");
+                HttpSession session = request.getSession();
+                session.setAttribute("user", user.toString());
+                
 
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(user.toString());
                 response.setStatus(HttpServletResponse.SC_OK);
+                System.out.println("login reusit");
             } else {
                 System.out.println("login esuat");
             }

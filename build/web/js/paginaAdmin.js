@@ -1,5 +1,5 @@
 function redirectioneazaPaginaConcedii(){
-     window.location.href = "frame.html";
+     window.location.href = "frame.jsp";
 }
 
 function redirectioenazaPaginaAdministrare(){

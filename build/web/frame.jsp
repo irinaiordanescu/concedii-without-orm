@@ -17,8 +17,8 @@
     </head>
 
     <frameset cols="15%, 85%" name="frameset_00">
-        <frame src="frame1.html" name="frame_01" scrolling="NO" marginwidth="0" marginheight="0" noresize="" frameborder="0"/>       
-        <frame src="frame2.html" name="frame_02" scrolling="YES" marginwidth="0" marginheight="0" noresize="" frameborder="0"/>
+        <frame src="frame1.jsp" name="frame_01" scrolling="NO" marginwidth="0" marginheight="0" noresize="" frameborder="0"/>       
+        <frame src="frame2.jsp" name="frame_02" scrolling="YES" marginwidth="0" marginheight="0" noresize="" frameborder="0"/>
     </frameset>
 </html>
 
