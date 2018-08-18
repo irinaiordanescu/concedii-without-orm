@@ -12,19 +12,11 @@ function doLogin() {
         dataType: 'json',
         
         success: function (data, textStatus) {
-           //alert('success');
-            
-            /*
-            console.log(data);
-            console.log(data.id);
-            console.log(data.username);
-            console.log(data.password);
-            */
-            
-            var id = data.id;
-            var user = data.user;
-            var password = data.password;
-
+           var user = data;
+           if(user.este_admin == "1"){
+               window.location.href = "paginaAdmin.html";
+               return;
+           }
             window.location.href = "frame.html";
         }   
         ,
