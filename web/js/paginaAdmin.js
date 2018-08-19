@@ -3,5 +3,5 @@ function redirectioneazaPaginaConcedii(){
 }
 
 function redirectioenazaPaginaAdministrare(){
-    
+     window.location.href = "administrareUtilizatori.jsp";
 }

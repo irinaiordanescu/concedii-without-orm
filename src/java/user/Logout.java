@@ -31,7 +31,6 @@ public class Logout extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.getSession().invalidate();
-        response.addHeader("Refresh", "2");
 
     }
 
