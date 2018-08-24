@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
 <%
-    if (((String) session.getAttribute("id") == null) || ((String) session.getAttribute("este_admin") == "1")) {
+    if (((String) session.getAttribute("id") == null) || ((String) session.getAttribute("este_admin") == "0")) {
         response.setStatus(HttpServletResponse.SC_FOUND);//302
         response.setHeader("Location", "http://localhost:8080/Concedii/paginaLogin.html/");
     }
@@ -79,26 +79,19 @@
                                 <label>Prioritate</label>
                                 <input type="number" min="1" id="adaugaPrioritateUtilizator" class="form-control" required="">
                             </div>
-                             <div class="form-group">
-                            <select id="tipangajat" class="form-control" style="margin-top:5px;"  required="">
-                                <option disabled selected hidden>Tip angajat</option>
-                                <option value="1">sef nivel 1</option>
-                                <option value="2">sef nivel 2</option>
-                                <option value="3">angajat junior</option>
-                                <option value="4">angajat senior</option>
-                            </select>
-                             </div>
-                             <div class="form-group">
-                            <select id="departament" class="form-control" style="margin-top:5px;"  required="">
-                                <option disabled selected hidden>Departament</option>
-                                <option value="1">HR</option>
-                                <option value="2">IT</option>
-                                <option value="3">MARKETING</option>
-                            </select>
-                             </div>
+                            <div class="form-group">
+                                <select id="tipangajat" class="form-control" style="margin-top:5px;"  required="">
+                                    <option disabled selected hidden>Tip angajat</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select id="departament" class="form-control" style="margin-top:5px;"  required="">
+                                    <option disabled selected hidden>Departament</option>
+                                </select>
+                            </div>
                             <div class="form-group">
                                 <label>Admin</label>
-                                <input type="checkbox" id="adaugaAdminUtilizator" class="checkbox-inline" required="">
+                                <input type="checkbox" id="adaugaAdminUtilizator" class="checkbox-inline">
                             </div>					
                         </div>
                         <div class="modal-footer">
@@ -113,7 +106,7 @@
         <div id="editEmployeeModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form>
+                    <form id="formEditare">
                         <div class="modal-header">						
                             <h4 class="modal-title">Editeaza angajat</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -121,31 +114,39 @@
                         <div class="modal-body">					
                             <div class="form-group">
                                 <label>Username</label>
-                                <input type="text" class="form-control" required="">
-                            </div>
-                            <div class="form-group">
-                                <label>Password</label>
-                                <input type="text" class="form-control" required="">
+                                <input id="editeazaUsername" type="text" class="form-control" required="">
                             </div>
                             <div class="form-group">
                                 <label>Prioritate</label>
-                                <input type="text" class="form-control" required="">
+                                <input id="editeazaPrioritate" type="text" class="form-control" required="">
+                            </div>		
+                            <div class="form-group">
+                                <select id="editeazaTipangajat" class="form-control" style="margin-top:5px;"  required="">
+                                    <option disabled selected hidden>Tip angajat</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select id="editeazaDepartament" class="form-control" style="margin-top:5px;"  required="">
+                                    <option disabled selected hidden>Departament</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label>Admin</label>
-                                <input type="checkbox" class="checkbox-inline">
-                            </div>					
+                                <input id="editeazaAdmin" type="checkbox" class="checkbox-inline">
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                            <input type="submit" class="btn btn-info" value="Save">
+                            <input type="submit" class="btn btn-info" value="Save" onClick="editeazaUtilizatorul()">
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-     
 
+        <div style="text-align: center;margin-top: 15px;">
+            <a onclick="redirectioneazaPePaginaDeAdmin()" >Inapoi la pagina de admin</a>
+        </div>
     </body>
 
 </html>

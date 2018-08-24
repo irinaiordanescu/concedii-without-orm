@@ -35,7 +35,7 @@ public class Utilizatori extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-       
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -58,6 +58,18 @@ public class Utilizatori extends HttpServlet {
             response.setStatus(404);
             return;
         }
+
+        String id = request.getParameter("id");
+        if (id == null) {
+            returneazaTotiUtilizatorii(request, response);
+        } else {
+            returneazaUnSingurAngajat(id, request, response);
+        }
+
+    }
+
+    protected void returneazaTotiUtilizatorii(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
         JSONObject utilizatori = new JSONObject();
 
@@ -98,7 +110,50 @@ public class Utilizatori extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    protected void returneazaUnSingurAngajat(String id, HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        JSONObject utilizatori = new JSONObject();
+
+        try {
+            String query = "SELECT users.username, users.prioritate,tip_angajat.tip_angajat,departament.denumire, users.este_admin FROM users JOIN tip_angajat ON users.id_tip_angajat=tip_angajat.id JOIN departament ON users.id_departament=departament.id WHERE users.id = ?";
+
+            PreparedStatement pst = LucruBd.getConnection().prepareStatement(query);
+            pst.setString(1, id);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                JSONObject utilizator = new JSONObject();
+
+                String username = rs.getString(1);
+                utilizator.put("username", username);
+
+                String prioritate = rs.getString(2);
+                utilizator.put("prioritate", prioritate);
+
+                String tip_angajat = rs.getString(3);
+                utilizator.put("tip_angajat", tip_angajat);
+
+                String departament = rs.getString(4);
+                utilizator.put("departament", departament);
+
+                String este_admin = rs.getString(5);
+                utilizator.put("este_admin", este_admin);
+
+                utilizator.put("id", id);
+
+                utilizatori.put("utilizator", utilizator);
+            }
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(utilizatori.toString());
+            response.setStatus(HttpServletResponse.SC_OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -120,17 +175,24 @@ public class Utilizatori extends HttpServlet {
             response.setStatus(404);
             return;
         }
-        
+
         String type = request.getParameter("type");
-        
-        if (type != null){
-            if (type.equals("DELETE")){
-                doDelete(request, response);
-                return;
+
+        if (type != null) {
+            if (type.equals("DELETE")) {
+                stergeUnUtilizator(request, response);
             }
-            
+            if (type.equals("EDIT")) {
+                editeazaUnUtilizator(request, response);
+            }
+        } else {
+            creazaUnUtilizator(request, response);
         }
 
+    }
+
+    protected void creazaUnUtilizator(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String username = null;
         String parola = null;
         String prioritate = null;
@@ -160,6 +222,10 @@ public class Utilizatori extends HttpServlet {
             pst.executeUpdate();
             System.out.println("query: " + query);
             System.out.println("s-a realizat cu succes");
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -175,8 +241,7 @@ public class Utilizatori extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+    protected void stergeUnUtilizator(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
         String esteAdmin = (String) request.getSession().getAttribute("este_admin");
@@ -195,6 +260,54 @@ public class Utilizatori extends HttpServlet {
             PreparedStatement pst = LucruBd.conn.prepareStatement(query);
 
             pst.setString(1, id);
+            pst.executeUpdate();
+            System.out.println("query: " + query);
+            System.out.println("s-a realizat cu succes");
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.setStatus(HttpServletResponse.SC_OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void editeazaUnUtilizator(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+        String esteAdmin = (String) request.getSession().getAttribute("este_admin");
+
+        if (esteAdmin == null || esteAdmin.equals("0")) {
+            response.setStatus(404);
+            return;
+        }
+        String username = null;
+        String parola = null;
+        String prioritate = null;
+        String departament = null;
+        String tipangajat = null;
+        String admin = null;
+
+        try {
+            username = request.getParameter("username");
+            prioritate = request.getParameter("prioritate");
+            departament = request.getParameter("departament");
+            tipangajat = request.getParameter("tipAngajat");
+            admin = request.getParameter("esteAdmin").equals("true") ? "1" : "0";
+            String id = request.getParameter("id");
+            System.out.println(username + prioritate + departament + tipangajat + admin + id);
+
+            LucruBd dataBase = new LucruBd();
+            dataBase.getConnection();
+            String query = "UPDATE users SET username = ?, prioritate = ?, id_departament = ?, id_tip_angajat = ?, este_admin = ? WHERE id = ?";
+            PreparedStatement pst = LucruBd.conn.prepareStatement(query);
+
+            pst.setString(1, username);
+            pst.setString(2, prioritate);
+            pst.setString(3, departament);
+            pst.setString(4, tipangajat);
+            pst.setString(5, admin);
+            pst.setString(6, id);
             pst.executeUpdate();
             System.out.println("query: " + query);
             System.out.println("s-a realizat cu succes");

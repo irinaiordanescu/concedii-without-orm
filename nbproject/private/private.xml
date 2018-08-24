@@ -11,8 +11,8 @@
             <file>file:/D:/Concedii/concedii/src/java/user/CalendarFirma.java</file>
             <file>file:/D:/Concedii/concedii/src/java/user/Register.java</file>
             <file>file:/D:/Concedii/concedii/src/java/user/AfisareTipAngajat.java</file>
+            <file>file:/D:/Concedii/concedii/src/java/user/Utilizatori.java</file>
             <file>file:/D:/Concedii/concedii/web/js/paginaAdmin.js</file>
-            <file>file:/D:/Concedii/concedii/web/js/calendarPersonal.js</file>
             <file>file:/D:/Concedii/concedii/src/java/user/Logout.java</file>
             <file>file:/D:/Concedii/concedii/web/js/formularConcediu.js</file>
             <file>file:/D:/Concedii/concedii/src/java/user/Login.java</file>
@@ -22,14 +22,14 @@
             <file>file:/D:/Concedii/concedii/web/js/fullcalendar.js</file>
             <file>file:/D:/Concedii/concedii/web/frame2.jsp</file>
             <file>file:/D:/Concedii/concedii/src/java/user/CalendarPersonal.java</file>
-            <file>file:/D:/Concedii/concedii/web/WEB-INF/glassfish-web.xml</file>
             <file>file:/D:/Concedii/concedii/web/css/fabmin.css</file>
             <file>file:/D:/Concedii/concedii/web/calendarPersonal.jsp</file>
             <file>file:/D:/Concedii/concedii/web/js/membriiFirma.js</file>
             <file>file:/D:/Concedii/concedii/web/js/calendarFirma.js</file>
             <file>file:/D:/Concedii/concedii/src/java/user/TipAngajat.java</file>
+            <file>file:/D:/Concedii/concedii/web/js/administrareUtilizatori.js</file>
             <file>file:/D:/Concedii/concedii/web/calendarFirma.jsp</file>
-            <file>file:/D:/Concedii/concedii/src/java/user/SaveFormularConcediu.java</file>
+            <file>file:/D:/Concedii/concedii/web/administrareUtilizatori.jsp</file>
             <file>file:/D:/Concedii/concedii/web/membriiFirma.jsp</file>
         </group>
     </open-files>
