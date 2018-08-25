@@ -78,6 +78,10 @@
                                 </a>
                             </li>
 
+                            <%
+                                //Remove '@' 
+                                if (((String) session.getAttribute("este_admin")).equals("1")) {
+                            %>
                             <li class="nav-btn-members"> 
                                 <a id="members_nav" class="active" href="membriiFirma.jsp" target="frame_02" >
                                     <i class="fa fa-use" data-original-title="" title=""> </i>
@@ -85,6 +89,9 @@
                                     <span class="indicator"> </span>
                                 </a>
                             </li>
+
+                            <% }
+                            %>
 
                             <!--<input type="button" style="background-color: #b96c88" class="btn btn btn-primary" onclick="cleanSession()" value="Log out"/>--> 
                             <li class="nav-btn-members"> 

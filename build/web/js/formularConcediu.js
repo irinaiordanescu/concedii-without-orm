@@ -6,14 +6,13 @@ function saveFormular() {
 
     var tipConcediu = concediu || medical || altceva; // una din valorile selectate
     var descriere = $('#time_off_name').val();
-    var nrZileLibere = $('#time_off_working_units').val();
     var deLaData = $('#time_off_start').val();
     var panaLaData = $('#time_off_end').val();
 
     $.ajax({
         type: "POST",
         url: "SaveFormularConcediu",
-        data: "tipConcediu=" + tipConcediu + "&descriere=" + descriere + "&nrZileLibere=" + nrZileLibere + "&deLaData=" + deLaData + "&panaLaData=" + panaLaData,
+        data: "tipConcediu=" + tipConcediu + "&descriere=" + descriere + "&deLaData=" + deLaData + "&panaLaData=" + panaLaData,
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         dataType: 'json',
 

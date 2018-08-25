@@ -65,20 +65,6 @@
                         </div>
                     </div>
 
-
-                    <div class="form-group float required time_off_working_units">
-                        <div class="col-md-3">
-                            <label class="float required control-label" for="time_off_working_units">
-                                Numar de zile libere:
-                            </label>
-                        </div>
-                        <div class="col-md-9">
-                            <div class="input-group">
-                                <input class="numeric integer required form-control" id="time_off_working_units" step="1" min="0" max="31" value="" name="time_off[working_units]" type="number">                                    
-                            </div>
-                        </div>
-                    </div>   
-
                     <div class="form-group date required time_off_occurrence_start_date">
                         <div class="col-md-3">
                             <label class="date required control-label" for="time_off_occurrence_attributes_start_date">
