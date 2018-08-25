@@ -32,13 +32,13 @@
                         <div class="quick-profile">
                             <menu>
                                 <div id="quickProfileToggle">
-                                    <a class="user-full-name">
+                                    <img src="images/Avatar.png" alt="Avatar" class="center-block" style="border-radius:50%; height:185px; width:175px; margin-bottom:10px">
+                                    <a class="user-full-name" style="text-align: center;padding-left: 0px">
                                         <%
                                             String name = (String) session.getAttribute("username");
                                             out.print(name);
                                         %> 
                                     </a>
-                                    <img src="images/Avatar.png" alt="Avatar" class="center-block" style="border-radius:50%; height:185px; width:175px; margin-bottom:10px">
                                 </div>
                             </menu>
                         </div>
@@ -58,6 +58,14 @@
                                 <a id="time_off_nav" href="calendarPersonal.jsp" target="frame_02" >
                                     <i class="fa fa-calendar" data-original-title="" title=""> </i>
                                     CALENDAR PERSONAL
+                                    <span class="indicator"> </span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a id="time_off_nav" href="setariProfil.jsp" target="frame_02" >
+                                    <i class="fa fa-calendar" data-original-title="" title=""> </i>
+                                    SETARI PROFIL
                                     <span class="indicator"> </span>
                                 </a>
                             </li>

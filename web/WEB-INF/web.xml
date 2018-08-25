@@ -40,6 +40,10 @@
         <servlet-name>Departament</servlet-name>
         <servlet-class>user.Departament</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SetareProfil</servlet-name>
+        <servlet-class>user.SetareProfil</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>Departament</servlet-name>
         <url-pattern>/Departament</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SetareProfil</servlet-name>
+        <url-pattern>/SetareProfil</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
