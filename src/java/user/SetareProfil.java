@@ -118,11 +118,11 @@ public class SetareProfil extends HttpServlet {
         try {
             username = request.getParameter("username");
             password = request.getParameter("password");
-            System.out.println("pas" + password.length());
+     
             LucruBd dataBase = new LucruBd();
             dataBase.getConnection();
             String query = "";
-            if (password == null || password.length() <= 3) {
+            if (password == null || password.length() == 0) {
                 query = "UPDATE users SET username = ? WHERE id = ?";
                 PreparedStatement pst = LucruBd.conn.prepareStatement(query);
 
