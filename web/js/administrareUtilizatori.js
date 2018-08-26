@@ -54,7 +54,6 @@ $(function () {
 
             element += "<td>" + utilizator.username + "</td>";
             element += "<td>" + utilizator.tip_angajat + "</td>";
-            element += "<td>" + utilizator.prioritate + "</td>";
             element += "<td>" + utilizator.departament + "</td>";
             var esteAdmin;
             if (utilizator.este_admin == "1") {
@@ -85,7 +84,6 @@ function adaugaUtilizator() {
         return;
     }
 
-    var prioritate = $("#adaugaPrioritateUtilizator").val();
     var esteAdmin = $("#adaugaAdminUtilizator").is(":checked");
     var tipAngajat = $("#tipangajat").val();
     var departament = $("#departament").val();
@@ -93,7 +91,7 @@ function adaugaUtilizator() {
     $.ajax({
         type: "POST",
         url: "Utilizatori",
-        data: "username=" + username + "&password=" + parola + "&prioritate=" + prioritate + "&departament=" + departament + "&tipAngajat=" + tipAngajat + "&esteAdmin=" + esteAdmin,
+        data: "username=" + username + "&password=" + parola + "&departament=" + departament + "&tipAngajat=" + tipAngajat + "&esteAdmin=" + esteAdmin,
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         dataType: 'json',
 
@@ -136,7 +134,6 @@ function creazaPaginaDeEditareUtilizator(id) {
         dataType: 'json',
         success: function (data) {
             var username = data.utilizator.username;
-            var prioritate = data.utilizator.prioritate;
             var admin = data.utilizator.este_admin == 1 ? true : false;
             var tipAngajat = data.utilizator.tip_angajat;
             var valoareTipAngajat = $("option").filter(function () {
@@ -148,7 +145,6 @@ function creazaPaginaDeEditareUtilizator(id) {
             }).first().attr("value");
 
             $("#editeazaUsername").val(username);
-            $("#editeazaPrioritate").val(prioritate);
             $("#editeazaAdmin").prop("checked", admin);
             $("#editeazaTipangajat").val(valoareTipAngajat);
             $("#editeazaDepartament").val(valoareDepartament);
@@ -164,7 +160,6 @@ function creazaPaginaDeEditareUtilizator(id) {
 
 function editeazaUtilizatorul() {
     var username = $("#editeazaUsername").val();
-    var prioritate = $("#editeazaPrioritate").val();
     var esteAdmin = $("#editeazaAdmin").is(":checked");
     var tipAngajat = $("#editeazaTipangajat").val();
     var departament = $("#editeazaDepartament").val();
@@ -173,7 +168,7 @@ function editeazaUtilizatorul() {
     $.ajax({
         type: "POST",
         url: "Utilizatori",
-        data: "username=" + username + "&prioritate=" + prioritate + "&departament=" + departament + "&tipAngajat=" + tipAngajat + "&esteAdmin=" + esteAdmin + "&type=EDIT&id=" + id,
+        data: "username=" + username + "&departament=" + departament + "&tipAngajat=" + tipAngajat + "&esteAdmin=" + esteAdmin + "&type=EDIT&id=" + id,
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         dataType: 'json'
         ,

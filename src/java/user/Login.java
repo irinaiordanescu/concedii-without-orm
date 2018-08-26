@@ -96,7 +96,7 @@ public class Login extends HttpServlet {
         LucruBd lucruBd = new LucruBd();
         JSONObject user = new JSONObject();
         try {
-            String query = "select id,prioritate,id_departament,id_tip_angajat,este_admin from users where username = ? and password = ?";
+            String query = "select users.id,tip_angajat.prioritate,id_departament,id_tip_angajat,este_admin from users JOIN tip_angajat ON users.id_tip_angajat=tip_angajat.id WHERE users.username = ? and users.password = ?";
             PreparedStatement pst = LucruBd.getConnection().prepareStatement(query);
             pst.setString(1, username);
             pst.setString(2, password);

@@ -195,7 +195,6 @@ public class Utilizatori extends HttpServlet {
             throws ServletException, IOException {
         String username = null;
         String parola = null;
-        String prioritate = null;
         String departament = null;
         String tipangajat = null;
         String admin = null;
@@ -203,22 +202,20 @@ public class Utilizatori extends HttpServlet {
         try {
             username = request.getParameter("username");
             parola = request.getParameter("password");
-            prioritate = request.getParameter("prioritate");
             departament = request.getParameter("departament");
             tipangajat = request.getParameter("tipAngajat");
             admin = request.getParameter("esteAdmin").equals("true") ? "1" : "0";
 
             LucruBd dataBase = new LucruBd();
             dataBase.getConnection();
-            String query = "insert into users(username, password, prioritate, id_departament, id_tip_angajat, este_admin)values(?,?,?,?,?,?)";
+            String query = "insert into users(username, password, id_departament, id_tip_angajat, este_admin)values(?,?,?,?,?)";
             PreparedStatement pst = LucruBd.conn.prepareStatement(query);
 
             pst.setString(1, username);
             pst.setString(2, parola);
-            pst.setString(3, prioritate);
-            pst.setString(4, departament);
-            pst.setString(5, tipangajat);
-            pst.setString(6, admin);
+            pst.setString(3, departament);
+            pst.setString(4, tipangajat);
+            pst.setString(5, admin);
             pst.executeUpdate();
             System.out.println("query: " + query);
             System.out.println("s-a realizat cu succes");
@@ -283,31 +280,28 @@ public class Utilizatori extends HttpServlet {
         }
         String username = null;
         String parola = null;
-        String prioritate = null;
         String departament = null;
         String tipangajat = null;
         String admin = null;
 
         try {
             username = request.getParameter("username");
-            prioritate = request.getParameter("prioritate");
             departament = request.getParameter("departament");
             tipangajat = request.getParameter("tipAngajat");
             admin = request.getParameter("esteAdmin").equals("true") ? "1" : "0";
             String id = request.getParameter("id");
-            System.out.println(username + prioritate + departament + tipangajat + admin + id);
+            System.out.println(username + departament + tipangajat + admin + id);
 
             LucruBd dataBase = new LucruBd();
             dataBase.getConnection();
-            String query = "UPDATE users SET username = ?, prioritate = ?, id_departament = ?, id_tip_angajat = ?, este_admin = ? WHERE id = ?";
+            String query = "UPDATE users SET username = ?, id_departament = ?, id_tip_angajat = ?, este_admin = ? WHERE id = ?";
             PreparedStatement pst = LucruBd.conn.prepareStatement(query);
 
             pst.setString(1, username);
-            pst.setString(2, prioritate);
-            pst.setString(3, departament);
-            pst.setString(4, tipangajat);
-            pst.setString(5, admin);
-            pst.setString(6, id);
+            pst.setString(2, departament);
+            pst.setString(3, tipangajat);
+            pst.setString(4, admin);
+            pst.setString(5, id);
             pst.executeUpdate();
             System.out.println("query: " + query);
             System.out.println("s-a realizat cu succes");

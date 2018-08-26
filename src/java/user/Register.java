@@ -30,7 +30,6 @@ public class Register extends HttpServlet {
         String username = null;
         String password = null;
         String checkpassword = null;
-        String prioritate = null;
         String departament = null;
         String tipangajat = null;
         
@@ -38,7 +37,6 @@ public class Register extends HttpServlet {
             username = request.getParameter("username");
             password = request.getParameter("password");
             checkpassword = request.getParameter("checkpassword");
-            prioritate = request.getParameter("prioritate");
             departament = request.getParameter("departament");
             tipangajat = request.getParameter("tipangajat");
             
@@ -46,11 +44,10 @@ public class Register extends HttpServlet {
             System.out.println("username: " + username);
             System.out.println("password: " + password);
             System.out.println("checkpassword: " + checkpassword);
-            System.out.println("prioritate: " + prioritate);
             System.out.println("departament: " + departament);
             System.out.println("tipangajat: " + tipangajat);
             
-            boolean exista = reg(username, password, checkpassword, prioritate, departament, tipangajat);
+            boolean exista = reg(username, password, checkpassword, departament, tipangajat);
 
             if(exista) {
                 JSONObject obj1 = new JSONObject();
@@ -58,7 +55,6 @@ public class Register extends HttpServlet {
                 obj1.put("username", username);
                 obj1.put("password", password);
                 obj1.put("checkpassword", checkpassword);
-                obj1.put("prioritate", prioritate);
                 obj1.put("departament", departament);
                 obj1.put("tipangajat", tipangajat);
                 
@@ -76,7 +72,7 @@ public class Register extends HttpServlet {
         }
     }
 
-    public boolean reg(String userName, String parola, String checkpassword, String prioritate, String departament, String tipangajat) {
+    public boolean reg(String userName, String parola, String checkpassword, String departament, String tipangajat) {
         try {
             if(userName.equals("") || parola.equals("")){ 
                 return false;
@@ -85,32 +81,27 @@ public class Register extends HttpServlet {
             LucruBd dataBase = new LucruBd();
             dataBase.getConnection();
             
-            String query = "select * from users where username='" + userName+"'";
+            String query = "select * from users where username=?";
             System.out.println("query: "+query);
 
-            Statement stmt = dataBase.conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+            PreparedStatement pstmt = dataBase.getConnection().prepareStatement(query);
+            pstmt.setString(1, userName);
+            ResultSet rs = pstmt.executeQuery(query);
 
             if (rs.next()) {
                 System.out.println("exista userul");
                 rs.close();
-                stmt.close();
+                pstmt.close();
                 return false;
             } 
             else if(parola.equals(checkpassword)){
-                query = "select prioritate from tip_angajat where id = '" + tipangajat +"'";
-                ResultSet rs1 = stmt.executeQuery(query);
-                rs1.next();
-                String x = rs1.getString("prioritate");
-                
-                query = "insert into users(username, password, prioritate, id_departament, id_tip_angajat)values(?,?,?,?,?)";
+                query = "insert into users(username, password, id_departament, id_tip_angajat)values(?,?,?,?)";
                 PreparedStatement pst = LucruBd.conn.prepareStatement(query);
 
                 pst.setString(1, userName);
                 pst.setString(2, parola);
-                pst.setString(3, x);
-                pst.setString(4, departament);
-                pst.setString(5, tipangajat);
+                pst.setString(3, departament);
+                pst.setString(4, tipangajat);
                 pst.executeUpdate();
                 System.out.println("query: " + query);
                 System.out.println("s-a realizat cu succes");

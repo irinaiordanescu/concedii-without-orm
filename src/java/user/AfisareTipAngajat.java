@@ -20,28 +20,32 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 public class AfisareTipAngajat extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
-        processRequest(request, response);
+        String idUser = (String) request.getSession().getAttribute("id");
+        if (idUser == null) {
+            return;
+        }
         String tipAngajati = null;
         JSONObject json = new JSONObject();
         List<String> usernames = new ArrayList<String>();
-        
+
         try {
             tipAngajati = request.getParameter("tipAngajat");
             String query = "";
-            
+
             if (tipAngajati.equals("toti angajatii")) {
                 tipAngajati = "%";
             }
@@ -54,7 +58,7 @@ public class AfisareTipAngajat extends HttpServlet {
             while (rs.next()) {
                 usernames.add(rs.getString(1));
             }
-            
+
             json.put("usernames", usernames.toArray());
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,5 +78,5 @@ public class AfisareTipAngajat extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }  
+    }
 }

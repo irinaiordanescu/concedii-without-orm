@@ -77,6 +77,10 @@
                                 </a>
                             </li>
 
+                                                        <%
+                                //Remove '@' 
+                                if (!((String) session.getAttribute("prioritate")).equals("1")) {
+                            %>
                             <li>
                                 <a id="time_off_nav" href="calendarFirma.jsp" target="frame_02" >
                                     <i class="fa fa-calendar" data-original-title="" title=""> </i>
@@ -84,6 +88,9 @@
                                     <span class="indicator"> </span>
                                 </a>
                             </li>
+
+                            <% }
+                            %>
 
                             <%
                                 //Remove '@' 

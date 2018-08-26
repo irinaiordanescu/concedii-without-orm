@@ -38,9 +38,8 @@
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
-                            <th>Username</th>
+                            <th>Username</th> 
                             <th>Tip Angajat</th>
-                            <th>Prioritate</th>
                             <th>Departament</th>
                             <th>Admin</th>
                             <th>Actiuni</th>
@@ -74,10 +73,6 @@
                             <div class="form-group">
                                 <label>Verifica Parola</label>
                                 <input type="password" id="adaugaVerificareParolaUtilizator" class="form-control" required="">
-                            </div>
-                            <div class="form-group">
-                                <label>Prioritate</label>
-                                <input type="number" min="1" id="adaugaPrioritateUtilizator" class="form-control" required="">
                             </div>
                             <div class="form-group">
                                 <select id="tipangajat" class="form-control" style="margin-top:5px;"  required="">
@@ -115,10 +110,6 @@
                             <div class="form-group">
                                 <label>Username</label>
                                 <input id="editeazaUsername" type="text" class="form-control" required="">
-                            </div>
-                            <div class="form-group">
-                                <label>Prioritate</label>
-                                <input id="editeazaPrioritate" type="text" class="form-control" required="">
                             </div>		
                             <div class="form-group">
                                 <select id="editeazaTipangajat" class="form-control" style="margin-top:5px;"  required="">
