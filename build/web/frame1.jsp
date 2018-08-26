@@ -53,7 +53,14 @@
                                     <span class="indicator"> </span>
                                 </a>
                             </li>
-
+                            
+                            <li>
+                                <a id="time_off_nav" href="administrareConcedii.jsp" target="frame_02" >
+                                    <i class="fa fa-calendar" data-original-title="" title=""> </i>
+                                    ADMINISTRARE CONCEDII
+                                    <span class="indicator"> </span>
+                                </a>
+                            </li>
                             <li>
                                 <a id="time_off_nav" href="calendarPersonal.jsp" target="frame_02" >
                                     <i class="fa fa-calendar" data-original-title="" title=""> </i>

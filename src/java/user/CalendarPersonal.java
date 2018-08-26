@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package user;
 
 import general.LucruBd;
@@ -20,8 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 public class CalendarPersonal extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
     }
 
@@ -35,7 +35,7 @@ public class CalendarPersonal extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-       protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
         String idUser = null;
@@ -43,10 +43,10 @@ public class CalendarPersonal extends HttpServlet {
 
         try {
             idUser = (String) request.getSession().getAttribute("id");
-            if(idUser == null){
+            if (idUser == null) {
                 return;
             }
-            String query = "SELECT prima_zi_concediu, ultima_zi_concediu FROM firma.formular_concediu where user_id = ?";
+            String query = "SELECT prima_zi_concediu, ultima_zi_concediu, tip_concediu, descriere,id FROM firma.formular_concediu where user_id = ?";
             PreparedStatement pst = LucruBd.getConnection().prepareStatement(query);
             pst.setString(1, idUser);
             ResultSet rs = pst.executeQuery();
@@ -55,6 +55,9 @@ public class CalendarPersonal extends HttpServlet {
                 List<String> concedii = new ArrayList<String>();
                 concedii.add(rs.getString(1));
                 concedii.add(rs.getString(2));
+                concedii.add(rs.getString(3));
+                concedii.add(rs.getString(4));
+                concedii.add(rs.getString(5));
                 json.append("concedii", concedii.toArray());
             }
         } catch (Exception e) {
@@ -79,6 +82,17 @@ public class CalendarPersonal extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+
+        String idUser = (String) request.getSession().getAttribute("id");
+        if (idUser == null) {
+            return;
+        }
+        String type = request.getParameter("type");
+        
+        if (type.equals("DELETE")) {
+            stergeConcediul(request, response);
+        }
+
     }
 
     /**
@@ -91,4 +105,29 @@ public class CalendarPersonal extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    public void stergeConcediul(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String id = request.getParameter("id");
+        if (id == null) {
+            return;
+        }
+        try {
+
+            LucruBd dataBase = new LucruBd();
+            dataBase.getConnection();
+            String query = "DELETE FROM formular_concediu WHERE id = ?";
+            PreparedStatement pst = LucruBd.conn.prepareStatement(query);
+
+            pst.setString(1, id);
+            pst.executeUpdate();
+            System.out.println("query: " + query);
+            System.out.println("s-a realizat cu succes");
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.setStatus(HttpServletResponse.SC_OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

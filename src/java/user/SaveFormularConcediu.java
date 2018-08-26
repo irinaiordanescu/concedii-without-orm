@@ -272,7 +272,7 @@ public class SaveFormularConcediu extends HttpServlet {
                 numarConcedii = rs.getInt(1);
             }
 
-            return numarConcedii <= iduriAngajati.size()/2;
+            return numarConcedii <= (iduriAngajati.size()/2);
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
