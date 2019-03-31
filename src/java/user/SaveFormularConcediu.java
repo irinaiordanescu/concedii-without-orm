@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package user;
 
 import general.LucruBd;
@@ -31,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 public class SaveFormularConcediu extends HttpServlet {
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -44,6 +44,7 @@ public class SaveFormularConcediu extends HttpServlet {
         String panaLaData = null;
 
         try {
+            //data care se duc in baza de date
             tipConcediu = request.getParameter("tipConcediu");
             medical = request.getParameter("medical");
             descriere = request.getParameter("descriere");
@@ -56,6 +57,7 @@ public class SaveFormularConcediu extends HttpServlet {
             System.out.println("deLaData: " + deLaData);
             System.out.println("panaLaData: " + panaLaData);
 
+            //verifica ca userul e logat
             String idUser = (String) request.getSession().getAttribute("id");
             if (idUser == null) {
                 return;
@@ -69,9 +71,11 @@ public class SaveFormularConcediu extends HttpServlet {
                 return;
             }
 
+            //se introduc valori in baza de date cu un query
             String query = "insert into formular_concediu(tip_concediu, descriere, prima_zi_concediu, ultima_zi_concediu, user_id) values (?,?,?,?,?)";
             PreparedStatement pst = LucruBd.conn.prepareStatement(query);
 
+            //sunt cele 5 "?" de pe randul 75 -> dau valori
             pst.setString(1, tipConcediu);
             pst.setString(2, descriere);
             pst.setString(3, deLaData);
@@ -89,6 +93,7 @@ public class SaveFormularConcediu extends HttpServlet {
             return;
         }
 
+        //se raspunde la request
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("{success: true}");
@@ -240,8 +245,9 @@ public class SaveFormularConcediu extends HttpServlet {
         return true;
     }
 
+    //regula de 50%
     public static boolean concediulNuRespectaRegulaDe50LaSuta(String deLaData, String panaLaData, String id) throws ParseException {
-        Calendar deLa = stringToCalendar(deLaData);
+        Calendar deLa = stringToCalendar(deLaData); 
         Calendar panaLa = stringToCalendar(panaLaData);
 
         try {
@@ -254,8 +260,7 @@ public class SaveFormularConcediu extends HttpServlet {
                 iduriAngajati.add(rs.getString(1));
             }
             System.out.println(iduriAngajati);
-//            String queryConcediiLuate = "SELECT count(*) FROM formular_concediu WHERE user_id IN ? AND ? NOT BETWEEN prima_zi_concediu and ultima_zi_concediu+1 AND ? NOT BETWEEN prima_zi_concediu-1 and ultima_zi_concediu";
-//            pst = LucruBd.getConnection().prepareStatement(queryConcediiLuate);
+
             String iduri = "(";
             for (String idA: iduriAngajati){
                 iduri += idA +",";

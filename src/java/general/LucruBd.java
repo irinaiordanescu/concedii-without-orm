@@ -9,6 +9,7 @@ package general;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+//returneaza conexiunea cu baza de date
 public class LucruBd {
     public static Connection conn = null;
 

@@ -38,9 +38,11 @@ $(function () {
     });
 
     function populeazaCalendar(data) {
+        //returneaza din vector cate un JSON si il pune in alt vector
         data.concedii.map((c) => {
             return JSON.parse(c);
         }).forEach((c) => {
+            //pt fiecare val JSON din noul vector se populeaza calendarul
             var username = Object.keys(c)[0];
             var titlu = "Concediul angajatului: " + username;
             var perioadaStart = c[username][0];
@@ -51,11 +53,11 @@ $(function () {
     }
 
     function generateColor(username) {
-        var useri = Object.keys(culoriUseri);
-        var exista = useri.filter((u) => u === username).length > 0;
-        if (exista) {
+        var useri = Object.keys(culoriUseri); //se aleg culorile pt useri
+        var exista = useri.filter((u) => u === username).length > 0; //se verifica daca culori sunt deja folosite sau nu
+        if (exista) { //dc exista foloseste culoarea
             return culoriUseri[username];
-        } else {
+        } else { //daca nu exista alege o culoare la intamplare(nefolosita)
             var culoare = colorArray.shift();
             culoriUseri[username] = culoare;
             return culoare;

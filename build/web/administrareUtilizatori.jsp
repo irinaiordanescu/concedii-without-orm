@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
 <%
+    //verific ca userul este logat in sistem
     if (((String) session.getAttribute("id") == null) || ((String) session.getAttribute("este_admin") == "0")) {
         response.setStatus(HttpServletResponse.SC_FOUND);//302
         response.setHeader("Location", "http://localhost:8080/Concedii/paginaLogin.html/");
     }
 %>
+
 <html>
     <head>
         <title>Administrare Utilizatori</title>
@@ -16,7 +18,7 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <!--<link rel="stylesheet" href='css/fabmin.css'>-->
+        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="js/administrareUtilizatori.js" type="text/javascript"></script>
@@ -27,10 +29,10 @@
             <div class="table-wrapper">
                 <div class="table-title">
                     <div class="row" style='margin-bottom: 30px'>
-                        <div class="col-sm-6">
+                        <div class="row">
                             <h2>Administrare Utilizatori</h2>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="row">
                             <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Adauga angajat</span></a>
                         </div>
                     </div>
@@ -51,7 +53,7 @@
                 </table>
             </div>
         </div>
-        <!-- Edit Modal HTML -->
+
         <div id="addEmployeeModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -97,7 +99,7 @@
                 </div>
             </div>
         </div>
-        <!-- Edit Modal HTML -->
+
         <div id="editEmployeeModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -112,11 +114,13 @@
                                 <input id="editeazaUsername" type="text" class="form-control" required="">
                             </div>		
                             <div class="form-group">
+                                <label>TipAngajat</label>
                                 <select id="editeazaTipangajat" class="form-control" style="margin-top:5px;"  required="">
                                     <option disabled selected hidden>Tip angajat</option>
                                 </select>
                             </div>
                             <div class="form-group">
+                                <label>Departament</label>
                                 <select id="editeazaDepartament" class="form-control" style="margin-top:5px;"  required="">
                                     <option disabled selected hidden>Departament</option>
                                 </select>
@@ -138,6 +142,6 @@
         <div style="text-align: center;margin-top: 15px;">
             <a onclick="redirectioneazaPePaginaDeAdmin()" >Inapoi la pagina de admin</a>
         </div>
+        
     </body>
-
 </html>

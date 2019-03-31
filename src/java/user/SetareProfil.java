@@ -16,12 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
-/**
- *
- * @author Leahu Cristian
- */
 public class SetareProfil extends HttpServlet {
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -31,6 +26,7 @@ public class SetareProfil extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -56,7 +52,7 @@ public class SetareProfil extends HttpServlet {
             return;
         }
         try {
-            String query = "SELECT users.username, users.prioritate,tip_angajat.tip_angajat,departament.denumire, users.este_admin FROM users JOIN tip_angajat ON users.id_tip_angajat=tip_angajat.id JOIN departament ON users.id_departament=departament.id WHERE users.id = ?";
+            String query = "SELECT users.username, tip_angajat.prioritate,tip_angajat.tip_angajat,departament.denumire, users.este_admin FROM users JOIN tip_angajat ON users.id_tip_angajat=tip_angajat.id JOIN departament ON users.id_departament=departament.id WHERE users.id = ?";
 
             PreparedStatement pst = LucruBd.getConnection().prepareStatement(query);
             pst.setString(1, id);

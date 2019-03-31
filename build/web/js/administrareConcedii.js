@@ -1,3 +1,6 @@
+//adauga tabelul cu concedii pentru a le putea vedea, sterge
+//daca exista perioade de concedii => apar nr de zile ocupate si ramase
+
 $(function () {
     $.ajax({
         type: "GET",
@@ -8,24 +11,25 @@ $(function () {
 
         success: function (data, textStatus) {
             var zileOcupate = 0;
+            //pt fiecare concediu (f) din vector am 5 variabile
+            //f[2], f[3],f[0], f[1], f[4] => asta este ordinea lor din baza de date formular_concediu
             data.concedii.forEach((f) => {
                 var tipConcediu = f[2];
                 var descriere = f[3];
                 var deLaData = f[0];
                 var panaLaData = f[1];
-                zileOcupate += (new Date(panaLaData) - new Date(deLaData)) / (24*60*60*1000);
-
                 var id = f[4];
-                var element = `<tr>`;
+                zileOcupate += (new Date(panaLaData) - new Date(deLaData)) / (24*60*60*1000); //calculez zilele ocupate din toate concediile
+                var element = `<tr>`; //creez elem in html cu datele mele; daca nu il creez nu pot vedea randul in tabel
                 element += "<td>" + tipConcediu + "</td>";
                 element += "<td>" + descriere + "</td>";
                 element += "<td>" + deLaData + "</td>";
                 element += "<td>" + panaLaData + "</td>";
-                element += `"<td><a class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="" data-original-title="Delete" onClick="stergeFormularConcediu(` + id + `); ">&#xE872;</i></a></td></tr>`;
-                $("#concedii").append(element);
+                element += `"<td><a class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="" data-original-title="Delete" onClick="stergeFormularConcediu(` + id + `); ">&#xE872;</i></a></td></tr>`; //buton de stergere
+                $("#concedii").append(element); //adaug elementul(ca si rand) in tabel
             })
-            $("#zileLibereOcupate").text("Zile libere ocupate: " + zileOcupate);
-            $("#zileLibereRamase").text("Zile libere ramase: " + (35 - zileOcupate));
+            $("#zileLibereOcupate").text("Zile libere ocupate: " + zileOcupate); //afisez zilele ocupate in pagina
+            $("#zileLibereRamase").text("Zile libere ramase: " + (35 - zileOcupate)); // afisez zilele ramasa in pagina
         }
         ,
         error: function (XMLHttpRequest, textStatus, errorThrown) {

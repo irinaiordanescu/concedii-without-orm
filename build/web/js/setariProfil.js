@@ -1,5 +1,4 @@
 $(function () {
-
     $.ajax({
         type: "GET",
         url: "SetareProfil",
@@ -7,7 +6,6 @@ $(function () {
         dataType: 'json',
         success: function (data) {
             var username = data.utilizator.username;
-
             $("#editeazaUsername").val(username);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {

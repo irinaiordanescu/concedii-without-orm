@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package user;
 
 import general.LucruBd;
@@ -34,6 +35,7 @@ public class AfisareTipAngajat extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        //verific accesul la BD
         String idUser = (String) request.getSession().getAttribute("id");
         if (idUser == null) {
             return;
@@ -43,20 +45,23 @@ public class AfisareTipAngajat extends HttpServlet {
         List<String> usernames = new ArrayList<String>();
 
         try {
+            //obtin variabila trimisa prin request care se numeste TipAngajat
             tipAngajati = request.getParameter("tipAngajat");
             String query = "";
-
+            //daca variabila trimisa = "toti angajatii" at se returneaza toti userii din BD
+            //dc nu doar acei care au tipul de angajat specificat
             if (tipAngajati.equals("toti angajatii")) {
                 tipAngajati = "%";
             }
 
-            query = "select users.username from users join tip_angajat on users.id_tip_angajat = tip_angajat.id where tip_angajat.tip_angajat LIKE ?";
+            query = "select users.username, users.id from users join tip_angajat on users.id_tip_angajat = tip_angajat.id where tip_angajat.tip_angajat LIKE ?";
             PreparedStatement pst = LucruBd.getConnection().prepareStatement(query);
             pst.setString(1, tipAngajati);
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
                 usernames.add(rs.getString(1));
+                //ids.add(rs.getString(2));
             }
 
             json.put("usernames", usernames.toArray());

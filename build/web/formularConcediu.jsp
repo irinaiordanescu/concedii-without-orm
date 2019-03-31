@@ -1,30 +1,30 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
 <% 
+    //verific ca userul este logat in sistem(= sa existi cu uesr si parola in baza de date)
     if((String) session.getAttribute("id") == null){
-       response.setStatus(HttpServletResponse.SC_FOUND);//302
-      response.setHeader("Location", "http://localhost:8080/Concedii/paginaLogin.html/");
+        response.setStatus(HttpServletResponse.SC_FOUND);//302
+        return;
     }
 %>
+
 <html>
     <head>
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <!--STYLESHEETS-->
         <link href="css/fabmin.css" rel="stylesheet" type="text/css" /> 
         <link href="css/bootstrap.css" rel="stylesheet" type="text/css" /> 
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         
-        <!--SCRIPTS-->
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
         <script type="text/javascript" src="js/formularConcediu.js"></script>
     </head>
 
     <body class='container-login100' style="background-image: url('images/beach-sunset.jpg');">
     <selection class="ng-scope" ng-app="fabmin" role="main">
-        <div id="page-content" class="frame-margine"   >
+        <div id="page-content" class="frame-margine">
             <div class="col-lg-9 timeoff">
                 <div class="form-group radio_buttons required time_off_time_off_type">
                     <div class="col-md-3" style="padding-left: 0px">
@@ -60,7 +60,7 @@
                                 Descriere: 
                             </label>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-9" style="margin-bottom: 20px">
                             <input placeholder=". . . . ." class="string required form-control" autofocus="autofocus" name="time_off[name]" id="time_off_name" type="text">
                         </div>
                     </div>
@@ -71,7 +71,7 @@
                                 De la data:
                             </label>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-9" style="margin-bottom: 20px">
                             <div id="calendar-de-la" class="input-group">
                                 <span class="input-group-addon" data-target="#time_off_start" style="width:10%">
                                     <i class="material-icons">date_range</i>
@@ -87,7 +87,7 @@
                                 Pana la data:
                             </label>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-9" style="margin-bottom: 20px">
                             <div id="calendar-pana-la" class="input-group">
                                 <span class="input-group-addon" data-target="#time_off_start" style="width:10%">
                                     <i class="material-icons">date_range</i>
@@ -97,9 +97,8 @@
                         </div>
                     </div> 
 
-                    <button id="save_button" class="btn btn btn-primary" name="button" type="submit" style="background-color: #b96c88" onclick="saveFormular()"> Save </button>
-
-                    <button id="submit_button" class="btn btn btn-primary" name="button" type="submit" style="background-color: #b96c88" onclick="cancelFormular()"> Cancel </button>
+                    <button id="save_button" class="btn btn-success" name="button" type="submit" onclick="saveFormular()"> Save </button>
+                    <button id="submit_button" class="btn btn-success" name="button" type="submit" onclick="cancelFormular()"> Cancel </button>
                 </div>
             </div>
         </div>

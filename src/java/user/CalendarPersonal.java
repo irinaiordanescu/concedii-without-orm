@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package user;
 
 import general.LucruBd;
@@ -19,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 public class CalendarPersonal extends HttpServlet {
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -34,12 +34,14 @@ public class CalendarPersonal extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    //returneaza toate concediile unei pers
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
         String idUser = null;
-        JSONObject json = new JSONObject();
+        JSONObject json = new JSONObject(); //pt a trimite inappoi date; JSON arata un format
 
         try {
             idUser = (String) request.getSession().getAttribute("id");
@@ -47,10 +49,11 @@ public class CalendarPersonal extends HttpServlet {
                 return;
             }
             String query = "SELECT prima_zi_concediu, ultima_zi_concediu, tip_concediu, descriere,id FROM firma.formular_concediu where user_id = ?";
-            PreparedStatement pst = LucruBd.getConnection().prepareStatement(query);
-            pst.setString(1, idUser);
+            PreparedStatement pst = LucruBd.getConnection().prepareStatement(query); //conexiunea cu BD
+            pst.setString(1, idUser); //se inllocuieste "?" de pe randul 51 cu idUser
             ResultSet rs = pst.executeQuery();
 
+            //pt iecare rezultat se populeaza/se adauga in JSON
             while (rs.next()) {
                 List<String> concedii = new ArrayList<String>();
                 concedii.add(rs.getString(1));
@@ -78,6 +81,8 @@ public class CalendarPersonal extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    //sterge un singur concediu al unei pers
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -87,12 +92,12 @@ public class CalendarPersonal extends HttpServlet {
         if (idUser == null) {
             return;
         }
+        
         String type = request.getParameter("type");
         
         if (type.equals("DELETE")) {
             stergeConcediul(request, response);
         }
-
     }
 
     /**
@@ -100,6 +105,7 @@ public class CalendarPersonal extends HttpServlet {
      *
      * @return a String containing servlet description
      */
+    
     @Override
     public String getServletInfo() {
         return "Short description";
@@ -112,7 +118,6 @@ public class CalendarPersonal extends HttpServlet {
             return;
         }
         try {
-
             LucruBd dataBase = new LucruBd();
             dataBase.getConnection();
             String query = "DELETE FROM formular_concediu WHERE id = ?";

@@ -1,4 +1,5 @@
 $(function() {
+    //initializare calendar(adaugare in pagina)
     $('#calendar').fullCalendar({
         header: {
             left: '',
@@ -26,6 +27,7 @@ $(function() {
         }
     });
 
+    //pt fiecare concediu din BD il adaug in calendar
     function populeazaCalendar(data) {
         console.log(data);
         data.concedii.forEach((c) => {

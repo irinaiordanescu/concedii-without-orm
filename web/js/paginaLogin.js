@@ -27,7 +27,7 @@ function doLogin() {
     });
 }
 
-$(document).keypress(function (e) { //dupa ce scriu in pagina si dau enter ma duce mai departe
+$(document).keypress(function (e) { //dupa ce scriu in pagina de login si dau enter(=echivalent cu a apasa pe butonul de login) ma duce mai departe
     if (e.which == 13) {
         doLogin();
     }
@@ -43,7 +43,5 @@ function cleanSession() {
 
         }}
     )
-    top.location.href = "http://localhost:8080/Concedii/paginaLogin.html/";
+    top.location.href = "http://localhost:8080/Concedii/paginaLogin.html/"; //redirectionez catre pag principala
 }
-
-

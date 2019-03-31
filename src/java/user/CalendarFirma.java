@@ -34,6 +34,8 @@ public class CalendarFirma extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    //afiseaza toate concediile tuturor angajatilor crae sunt in acelasi departament in funtie de gradul lor
     @Override
      protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -43,14 +45,20 @@ public class CalendarFirma extends HttpServlet {
 
         try {
             prioritate = (String) request.getSession().getAttribute("prioritate");
+            
             if(prioritate == null){
                 return;
             }
-            String query = "SELECT users.username, prima_zi_concediu, ultima_zi_concediu FROM firma.formular_concediu join users on users.id = formular_concediu.user_id AND users.prioritate <= ?";
+            
+            String id_departament = (String) request.getSession().getAttribute("id_departament");
+            //selectez toti angajatii care sunt in acelasi departament si afisez concediile doar daca sunt sef adjunct si sef
+            String query = "SELECT users.username, prima_zi_concediu, ultima_zi_concediu FROM formular_concediu,users WHERE formular_concediu.user_id = users.id AND users.id IN (SELECT users.id FROM users,tip_angajat WHERE users.id_tip_angajat =tip_angajat.id AND  users.id_departament = ? AND tip_angajat.prioritate <= ?)";
             PreparedStatement pst = LucruBd.getConnection().prepareStatement(query);
-            pst.setString(1, prioritate);
+            pst.setString(1, id_departament);
+            pst.setString(2, prioritate);
             ResultSet rs = pst.executeQuery();
 
+            //adaug concediile in lista de concedii
             while (rs.next()) {
                 List<String> concedii = new ArrayList<String>();
                 JSONObject newJson = new JSONObject();

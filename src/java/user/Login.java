@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package user;
 
 import general.LucruBd;
@@ -19,7 +20,6 @@ import javax.servlet.http.HttpSession;
 import org.json.*;
 
 public class Login extends HttpServlet {
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -34,11 +34,16 @@ public class Login extends HttpServlet {
             System.out.println("username: " + username);
             System.out.println("password: " + password);
 
-            boolean exista = login(username, password);
+            //cu functia login verific ca in BD daca exista username si password
+            //daca exista returneaza true
+            boolean exista = login(username, password); 
 
             if (exista) {
+                //daca exista user si parola introduse apeleaza fct getUserData
                 JSONObject user = getUserData(username, password);
+                //deschid o sesiune 
                 HttpSession session = request.getSession(true);
+                //pt fiecare atribut returnat de fct getUserData, il salvez in sesiune
                 for (String key : user.keySet()) {
                     session.setAttribute(key, user.get(key));
                 }
@@ -46,17 +51,18 @@ public class Login extends HttpServlet {
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(user.toString());
-                response.setStatus(HttpServletResponse.SC_OK);
+                response.setStatus(HttpServletResponse.SC_OK); //daca OK-ul este trimis se apeleaza codul din succes din paginaLogin.js, daca nu se apeleaza codul din error
                 System.out.println("login reusit");
             } else {
                 System.out.println("login esuat");
             }
         } catch (Exception e) {
-
+            
         }
     }
 
     public boolean login(String userName, String parola) {
+        //creez o noua conexiune cu BD
         LucruBd lucruBd = new LucruBd();
         lucruBd.getConnection();
 
@@ -64,17 +70,20 @@ public class Login extends HttpServlet {
         System.out.println("query: " + query);
 
         try {
+            //creez un query pt a putea apela comanda de la linia 66
             Statement stmt = lucruBd.conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
             if (!rs.next()) {
+                //daca nu exista user, se inchide conexiunea
                 System.out.println("NU exista userul");
                 rs.close();
                 stmt.close();
                 return false;
             } else {
                 System.out.println("parola introdusa: " + parola);
-                System.out.println("parola bd: " + rs.getString(3));
+                System.out.println("parola bd: " + rs.getString(3)); //rs.getString(3) = val parolei din BD
+                //verifica daca coincid parolele
                 if (parola.equals(rs.getString(3))) {
                     System.out.println("Utilizatorul exista si are parola introdusa");
                     rs.close();
@@ -92,6 +101,7 @@ public class Login extends HttpServlet {
         return true;
     }
 
+    //fct care returneaza un obiect cu toate val din BD
     public JSONObject getUserData(String username, String password) {
         LucruBd lucruBd = new LucruBd();
         JSONObject user = new JSONObject();

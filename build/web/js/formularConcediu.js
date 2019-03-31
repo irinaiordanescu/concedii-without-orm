@@ -1,9 +1,7 @@
-
 function saveFormular() {
     var concediu = $('#time_off_time_off_type_entitled:checked').val();
     var medical = $('#time_off_time_off_type_sickness:checked').val();
     var altceva = $('#time_off_time_off_type_discretionary:checked').val();
-
     var tipConcediu = concediu || medical || altceva; // una din valorile selectate
     var descriere = $('#time_off_name').val();
     var deLaData = $('#time_off_start').val();
@@ -29,6 +27,7 @@ function saveFormular() {
 }
 
 function cancelFormular() {
+    //resetare valori
     document.getElementById("time_off_time_off_type_entitled").checked = false;
     document.getElementById("time_off_time_off_type_sickness").checked = false;
     document.getElementById("time_off_time_off_type_discretionary").checked = false;
@@ -38,6 +37,7 @@ function cancelFormular() {
     document.getElementById("time_off_end").value = "";
 }
 
+//in loc sa apas pe butonul save, pot apasa tasta enter
 $(document).keypress(function (e) {
     if (e.which == 13) {
         saveFormular();

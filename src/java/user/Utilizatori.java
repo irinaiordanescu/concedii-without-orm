@@ -17,10 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
-/**
- *
- * @author Leahu Cristian
- */
 public class Utilizatori extends HttpServlet {
 
     /**
@@ -32,6 +28,7 @@ public class Utilizatori extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -54,11 +51,14 @@ public class Utilizatori extends HttpServlet {
 
         String esteAdmin = (String) request.getSession().getAttribute("este_admin");
 
+        //verifica daca e admin deoarece doar el are acces la aceasta pagina 
         if (esteAdmin == null || esteAdmin.equals("0")) {
             response.setStatus(404);
             return;
         }
 
+        //daca nu exista un id se returneaza toti
+        //altfel in request se returneaza doar user-ul cu id-ul corespunzator
         String id = request.getParameter("id");
         if (id == null) {
             returneazaTotiUtilizatorii(request, response);
@@ -71,36 +71,27 @@ public class Utilizatori extends HttpServlet {
     protected void returneazaTotiUtilizatorii(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        //este o lista cu toti utilizatorii
         JSONObject utilizatori = new JSONObject();
 
         try {
-            String query = "SELECT users.username, users.prioritate,tip_angajat.tip_angajat,departament.denumire, users.este_admin, users.id FROM users JOIN tip_angajat ON users.id_tip_angajat=tip_angajat.id JOIN departament ON users.id_departament=departament.id";
-
+            String query = "SELECT users.username, tip_angajat.tip_angajat,departament.denumire, users.este_admin, users.id FROM users JOIN tip_angajat ON users.id_tip_angajat=tip_angajat.id JOIN departament ON users.id_departament=departament.id";
             Statement pst = LucruBd.getConnection().createStatement();
             ResultSet rs = pst.executeQuery(query);
 
             while (rs.next()) {
-                JSONObject utilizator = new JSONObject();
-
+                JSONObject utilizator = new JSONObject(); //contine toate datele pt un sg utilizator
                 String username = rs.getString(1);
                 utilizator.put("username", username);
-
-                String prioritate = rs.getString(2);
-                utilizator.put("prioritate", prioritate);
-
-                String tip_angajat = rs.getString(3);
+                String tip_angajat = rs.getString(2);
                 utilizator.put("tip_angajat", tip_angajat);
-
-                String departament = rs.getString(4);
+                String departament = rs.getString(3);
                 utilizator.put("departament", departament);
-
-                String este_admin = rs.getString(5);
+                String este_admin = rs.getString(4);
                 utilizator.put("este_admin", este_admin);
-
-                String id = rs.getString(6);
+                String id = rs.getString(5);
                 utilizator.put("id", id);
-
-                utilizatori.append("utilizatori", utilizator);
+                utilizatori.append("utilizatori", utilizator); //se adauga utilizatorul in json-ul de oe linia 75
             }
 
             response.setContentType("application/json");
@@ -114,36 +105,25 @@ public class Utilizatori extends HttpServlet {
 
     protected void returneazaUnSingurAngajat(String id, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         JSONObject utilizatori = new JSONObject();
 
         try {
-            String query = "SELECT users.username, users.prioritate,tip_angajat.tip_angajat,departament.denumire, users.este_admin FROM users JOIN tip_angajat ON users.id_tip_angajat=tip_angajat.id JOIN departament ON users.id_departament=departament.id WHERE users.id = ?";
-
+            String query = "SELECT users.username, tip_angajat.tip_angajat,departament.denumire, users.este_admin FROM users JOIN tip_angajat ON users.id_tip_angajat=tip_angajat.id JOIN departament ON users.id_departament=departament.id WHERE users.id = ?";
             PreparedStatement pst = LucruBd.getConnection().prepareStatement(query);
-            pst.setString(1, id);
+            pst.setString(1, id); //pt ca am un singur utilizator cu id-ul pe care il am in request
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
                 JSONObject utilizator = new JSONObject();
-
                 String username = rs.getString(1);
                 utilizator.put("username", username);
-
-                String prioritate = rs.getString(2);
-                utilizator.put("prioritate", prioritate);
-
-                String tip_angajat = rs.getString(3);
+                String tip_angajat = rs.getString(2);
                 utilizator.put("tip_angajat", tip_angajat);
-
-                String departament = rs.getString(4);
+                String departament = rs.getString(3);
                 utilizator.put("departament", departament);
-
-                String este_admin = rs.getString(5);
+                String este_admin = rs.getString(4);
                 utilizator.put("este_admin", este_admin);
-
                 utilizator.put("id", id);
-
                 utilizatori.put("utilizator", utilizator);
             }
 
@@ -169,6 +149,7 @@ public class Utilizatori extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
 
+        //se verific din nou daca este admin pt ca doar ei pot sterge/edita/creea
         String esteAdmin = (String) request.getSession().getAttribute("este_admin");
 
         if (esteAdmin == null || esteAdmin.equals("0")) {
@@ -176,6 +157,7 @@ public class Utilizatori extends HttpServlet {
             return;
         }
 
+        //type:
         String type = request.getParameter("type");
 
         if (type != null) {

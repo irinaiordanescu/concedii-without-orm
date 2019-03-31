@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package user;
 
 import general.LucruBd;
@@ -18,10 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
-/**
- *
- * @author Leahu Cristian
- */
 public class Departament extends HttpServlet {
 
     /**
@@ -33,6 +30,7 @@ public class Departament extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -55,22 +53,23 @@ public class Departament extends HttpServlet {
         JSONObject json = new JSONObject();
         List<String> departamente = new ArrayList<String>();
 
+        //verifica ca id-ul este in sesinue; daca este inseamna ca e autentificat
         String idUser = (String) request.getSession().getAttribute("id");
         if (idUser == null) {
             return;
         }
         
         try {
-            String query = "select denumire from departament";
-
+            String query = "select denumire,id from departament";
             Statement pst = LucruBd.getConnection().createStatement();
             ResultSet rs = pst.executeQuery(query);
 
             while (rs.next()) {
-                departamente.add(rs.getString(1));
+                JSONObject departament = new JSONObject();
+                departament.put("denumire", rs.getString(1));
+                departament.put("id", rs.getString(2));
+                json.append("departamente", departament.toString());
             }
-
-            json.put("departamente", departamente.toArray());
         } catch (Exception e) {
             e.printStackTrace();
             response.setContentType("application/json");

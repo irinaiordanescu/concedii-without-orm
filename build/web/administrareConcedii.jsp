@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
 <%
+    //verific ca userul este logat in sistem
     if (((String) session.getAttribute("id") == null)) {
         response.setStatus(HttpServletResponse.SC_FOUND);//302
-        response.setHeader("Location", "http://localhost:8080/Concedii/paginaLogin.html/");
+        return;
     }
 %>
+
 <html>
     <head>
         <title>Administrare Concedii</title>
@@ -16,13 +18,13 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <!--<link rel="stylesheet" href='css/fabmin.css'>-->
+        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="js/administrareConcedii.js" type="text/javascript"></script>
     </head>
 
-    <body>
+    <body class='container-login100' style="background-image: url('images/beach-sunset.jpg'); background-size: cover; background-repeat: no-repeat; background-position: center center;">
         <div class="container">
             <div class="table-wrapper">
                 <div class="table-title">
@@ -48,13 +50,9 @@
                             <th>Actiuni</th>
                         </tr>
                     </thead>
-                    <tbody id="concedii">
-
-                    </tbody>
+                    <tbody id="concedii"></tbody>
                 </table>
             </div>
         </div>
-
     </body>
-
 </html>

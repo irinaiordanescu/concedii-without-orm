@@ -7,7 +7,7 @@ $(function () {
 
         success: function (data, textStatus) {
             data.tipuriAngajati.forEach((e) => {
-                $("#mySelect").append("<option>" + e + "</option>");
+                $("#mySelect").append("<option>" + JSON.parse(e).tip_angajat + "</option>"); //adaug datele din BD in drop down
             });
         }
         ,
@@ -49,5 +49,5 @@ function adaugaMembriiInPagina(data) {
     });
     elementAdaugat += "</ul>";
     
-    $("#membrii").empty().append(elementAdaugat);
+    $("#membrii").empty().append(elementAdaugat); //se adauga la sfarsitul elem noul membru
 }

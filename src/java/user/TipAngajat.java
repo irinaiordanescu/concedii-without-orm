@@ -30,26 +30,27 @@ public class TipAngajat extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
 
-        String tipAngajat = null;
         JSONObject json = new JSONObject();
         List<String> tipuriAngajati = new ArrayList<String>();
 
+        //se verifica daca are un id in sesiune
         String idUser = (String) request.getSession().getAttribute("id");
         if (idUser == null) {
             return;
         }
         try {
-            System.out.println("-----Show-----");
-            String query = "select tip_angajat from tip_angajat";
-
+            //se selecteaza angajatul si id-ul, se pune intr-un ob de tip JSON si se returneaza
+             System.out.println("-----Show-----");
+            String query = "select tip_angajat,id from tip_angajat";
             Statement pst = LucruBd.getConnection().createStatement();
             ResultSet rs = pst.executeQuery(query);
 
             while (rs.next()) {
-                tipuriAngajati.add(rs.getString(1));
+                JSONObject tipAngajat = new JSONObject();
+                tipAngajat.put("tip_angajat", rs.getString(1));
+                tipAngajat.put("id", rs.getString(2));
+                json.append("tipuriAngajati", tipAngajat.toString());
             }
-
-            json.put("tipuriAngajati", tipuriAngajati.toArray());
         } catch (Exception e) {
             e.printStackTrace();
             response.setContentType("application/json");

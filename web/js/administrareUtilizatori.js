@@ -6,10 +6,18 @@ $(function () {
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         dataType: 'json',
         success: function (data) {
-            data.tipuriAngajati.forEach((tipAngajat, index) => {
-                $("#tipangajat").append("<option value=" + (index + 1) + ">" + tipAngajat + "</option>");
-                $("#editeazaTipangajat").append("<option value=" + (index + 1) + ">" + tipAngajat + "</option>");
+            //pt fiecare tipAngajat din BD adaug numele in lista pt adaugare si editare
+            data.tipuriAngajati.forEach((tipAngajat) => {
+                var denumireTipAngajat = JSON.parse(tipAngajat).tip_angajat;
+                var id = JSON.parse(tipAngajat).id;
+                $("#tipangajat").append("<option value=" + id + ">" + denumireTipAngajat + "</option>");
+                $("#editeazaTipangajat").append("<option value=" + id + ">" + denumireTipAngajat + "</option>");
             });
+        }
+        ,
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert("EROARE");
+            console.log(textStatus);
         }
     });
 
@@ -20,14 +28,23 @@ $(function () {
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         dataType: 'json',
         success: function (data) {
+            //pt fiecare departament din BD adaug numele acestuia in lista pt adaugare si editare
             console.log("Data" + data);
-            data.departamente.forEach((departament, index) => {
-                $("#departament").append("<option value=" + (index + 1) + ">" + departament + "</option>");
-                $("#editeazaDepartament").append("<option value=" + (index + 1) + ">" + departament + "</option>");
+            data.departamente.forEach((departament) => {
+                var denumireDepartament = JSON.parse(departament).denumire;
+                var id = JSON.parse(departament).id;
+                $("#departament").append("<option value=" + id + ">" + denumireDepartament + "</option>");
+                $("#editeazaDepartament").append("<option value=" + id + ">" + denumireDepartament + "</option>");
             });
+        }
+        ,
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert("EROARE");
+            console.log(textStatus);
         }
     });
 
+    //adaug membrii in pagina obtinuti prin apelarea bazei de date
     $.ajax({
         type: "GET",
         url: "Utilizatori",
@@ -43,15 +60,11 @@ $(function () {
             alert("EROARE");
             console.log(textStatus);
         }
-    }
-    );
+   });
 
     function adaugaMembriiInPagina(data) {
-
         data.utilizatori.forEach((utilizator) => {
-            var element =
-                    `<tr>`;
-
+            var element =`<tr>`;
             element += "<td>" + utilizator.username + "</td>";
             element += "<td>" + utilizator.tip_angajat + "</td>";
             element += "<td>" + utilizator.departament + "</td>";
@@ -62,8 +75,7 @@ $(function () {
                 esteAdmin = "Nu";
             }
             element += "<td>" + esteAdmin + "</td>";
-            element +=
-                    ` <td>
+            element += ` <td>
              <a class="edit" href="#editEmployeeModal" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="" data-original-title="Edit" onClick="creazaPaginaDeEditareUtilizator(` + utilizator.id + `);">&#xE254;</i></a>
              <a class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="" data-original-title="Delete" onClick="stergeUtilizator(` + utilizator.id + `);">&#xE872;</i></a>
              </td>
@@ -72,7 +84,6 @@ $(function () {
         });
     }
 });
-
 
 function adaugaUtilizator() {
     var username = $("#adaugaUsernameUtilizator").val();
@@ -84,9 +95,9 @@ function adaugaUtilizator() {
         return;
     }
 
-    var esteAdmin = $("#adaugaAdminUtilizator").is(":checked");
     var tipAngajat = $("#tipangajat").val();
     var departament = $("#departament").val();
+    var esteAdmin = $("#adaugaAdminUtilizator").is(":checked");
 
     $.ajax({
         type: "POST",
@@ -132,7 +143,9 @@ function creazaPaginaDeEditareUtilizator(id) {
         data: "id=" + id,
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         dataType: 'json',
+        
         success: function (data) {
+            //var se populeaza cu valori din BD
             var username = data.utilizator.username;
             var admin = data.utilizator.este_admin == 1 ? true : false;
             var tipAngajat = data.utilizator.tip_angajat;
@@ -144,26 +157,26 @@ function creazaPaginaDeEditareUtilizator(id) {
                 return $(this).text() === departament;
             }).first().attr("value");
 
+            //populez randurile cu valorile userului din baza de date
             $("#editeazaUsername").val(username);
-            $("#editeazaAdmin").prop("checked", admin);
             $("#editeazaTipangajat").val(valoareTipAngajat);
             $("#editeazaDepartament").val(valoareDepartament);
+            $("#editeazaAdmin").prop("checked", admin);
             $('#formEditare').append('<input type="hidden" id="idAngajat" value="'+id+'" />');
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             console.log(errorThrown);
         }
     });
-//    $("#editEmployeeModal").click();
-//    href="#editEmployeeModal"
 }
 
+//este butonul de save din editare => ia datele si le duce in baza de date
 function editeazaUtilizatorul() {
+    var id = $("#idAngajat").val();
     var username = $("#editeazaUsername").val();
-    var esteAdmin = $("#editeazaAdmin").is(":checked");
     var tipAngajat = $("#editeazaTipangajat").val();
     var departament = $("#editeazaDepartament").val();
-    var id = $("#idAngajat").val();
+    var esteAdmin = $("#editeazaAdmin").is(":checked");
 
     $.ajax({
         type: "POST",
@@ -176,7 +189,7 @@ function editeazaUtilizatorul() {
             console.log(errorThrown);
         }
     });
-
+    
     window.location.href = "administrareUtilizatori.jsp";
 }
 
